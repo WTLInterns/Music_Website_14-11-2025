@@ -3,7 +3,7 @@
 import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
+
 
 export default function ForgotPassword() {
   const router = useRouter();
@@ -58,9 +58,6 @@ export default function ForgotPassword() {
       {/* Background and overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/70 via-purple-900/60 to-violet-900/70" />
 
-      <div className="relative z-10">
-        <Navbar />
-      </div>
 
       <div className="relative z-10 mt-4 sm:mt-8 lg:mt-10 container mx-auto px-2 sm:px-4 lg:px-6 py-8 sm:py-10">
         <div className="mx-auto max-w-md rounded-2xl overflow-hidden shadow-2xl">

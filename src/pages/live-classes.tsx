@@ -1,43 +1,156 @@
+
+
+import { motion } from 'framer-motion'
+import { FaMusic } from 'react-icons/fa'
+import Image from 'next/image'
+
 export default function LiveClasses() {
   return (
-    <div className="py-12">
-      <h1 className="section-title">Live Classes</h1>
-      <p className="section-subtitle mt-2">Join upcoming live sessions and explore past classes.</p>
+    <div className="py-12 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            Live Classes
+          </motion.h1>
+          <motion.p 
+            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            Join upcoming live sessions and explore past classes.
+          </motion.p>
+        </motion.div>
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 card p-5 bg-music-waves bg-cover">
-          <h3 className="font-bold mb-2">Embed Video</h3>
-          <div className="aspect-video bg-black/40 border border-white/10 rounded-md overflow-hidden">
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/ScMzIvxBSi4"
-              title="Live Class Preview"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Main Content - Video and Gallery */}
+          <div className="md:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+            <h3 className="font-bold text-xl text-gray-800 mb-4">Live Session Preview</h3>
+            <div className="aspect-video bg-black/5 border-2 border-gray-200 rounded-xl overflow-hidden shadow-inner">
+              <iframe
+                className="w-full h-full rounded-lg"
+                src="https://www.youtube.com/embed/ScMzIvxBSi4"
+                title="Live Class Preview"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+            
+            <h3 className="font-bold text-xl text-gray-800 mt-8 mb-4">Class Gallery</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {[1,2,3,4,5,6].map(i => (
+                <motion.div 
+                  key={i} 
+                  className="relative h-28 rounded-xl overflow-hidden group bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-gray-300 shadow-md"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 grid place-content-center text-gray-400 font-medium">Thumbnail {i}</div>
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 grid place-content-center">
+                    <div className="h-12 w-12 rounded-full bg-white text-black grid place-content-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-lg">▶</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-          <h3 className="font-bold mt-6 mb-2">Gallery</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[1,2,3,4,5,6].map(i => (
-              <div key={i} className="relative h-28 rounded-md overflow-hidden group bg-white/5 border border-white/10">
-                <div className="absolute inset-0 grid place-content-center text-white/50">Thumbnail {i}</div>
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition grid place-content-center">
-                  <div className="h-10 w-10 rounded-full bg-white/80 text-black grid place-content-center">▶</div>
-                </div>
+
+          {/* Upcoming Classes Sidebar with Background Image */}
+          <div className="relative rounded-2xl p-6 shadow-lg border border-white/20 overflow-hidden min-h-[500px]">
+            {/* Full Width & Height Background Image */}
+            <div className="absolute inset-0 w-full h-full">
+              <Image 
+                src="/images/music3.png" 
+                alt="Music Background"
+                fill
+                className="object-cover w-full h-full"
+              />
+              {/* Overlay for better readability */}
+              <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
+            </div>
+
+            {/* Content */}
+            <div className="relative z-20 h-full flex flex-col">
+              <h3 className="font-bold text-xl text-white mb-6">Upcoming Classes</h3>
+              <div className="space-y-4 mb-8 flex-grow">
+                {[
+                  {title:'Strumming Mastery', date:'Sat 7 PM', color: 'from-black-800 '},
+                  {title:'Ukulele Jam', date:'Sun 5 PM', color: 'from-black-800'}
+                ].map((c, i) => (
+                  <motion.div 
+                    key={i}
+                    className="p-4 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-sm hover:shadow-md transition-all duration-300"
+                    whileHover={{ scale: 1.02, x: 5 }}
+                  >
+                    <div className={`font-semibold bg-gradient-to-r ${c.color} bg-clip-text text-transparent`}>
+                      {c.title}
+                    </div>
+                    <div className="text-white/90 text-sm mt-1">{c.date}</div>
+                  </motion.div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="card p-5 shadow-glow">
-          <h3 className="font-bold mb-3">Upcoming Classes</h3>
-          <div className="space-y-3">
-            {[{title:'Strumming Mastery', date:'Sat 7 PM'}, {title:'Ukulele Jam', date:'Sun 5 PM'}].map((c, i) => (
-              <div key={i} className="p-3 rounded bg-white/5 border border-white/10">
-                <div className="font-semibold">{c.title}</div>
-                <div className="text-white/70 text-sm">{c.date}</div>
+
+              {/* Animated Music Icons */}
+              <div className="flex justify-center space-x-6">
+                <motion.div
+                  animate={{
+                    y: [0, -10, 0],
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="text-white"
+                >
+                  <FaMusic className="w-6 h-6" />
+                </motion.div>
+                <motion.div
+                  animate={{
+                    y: [0, -15, 0],
+                    rotate: [0, -5, 5, 0],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5
+                  }}
+                  className="text-white"
+                >
+                  <FaMusic className="w-6 h-6" />
+                </motion.div>
+                <motion.div
+                  animate={{
+                    y: [0, -8, 0],
+                    rotate: [0, 8, -8, 0],
+                  }}
+                  transition={{
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                  className="text-white"
+                >
+                  <FaMusic className="w-6 h-6" />
+                </motion.div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>

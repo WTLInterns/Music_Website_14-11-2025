@@ -17,48 +17,165 @@ export default function Contact() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 relative overflow-hidden">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/90 to-purple-50/90 relative overflow-hidden">
+      {/* Enhanced Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Gradient Orbs */}
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-pink-200/30 rounded-full blur-3xl"></div>
+        {/* Lighter Gradient Orbs */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-purple-100/20 to-pink-100/20 rounded-full blur-3xl animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-100/20 to-cyan-100/20 rounded-full blur-3xl animate-blob" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-yellow-50/15 to-orange-50/15 rounded-full blur-3xl animate-blob" style={{ animationDelay: '4s' }}></div>
         
-        {/* Floating Music Icons */}
+        {/* Swimming Guitar Images */}
+        <motion.div
+          className="absolute top-10 left-10 w-16 h-16 opacity-10"
+          animate={{
+            x: [0, 100, 200, 150, 0],
+            y: [0, -50, 50, 100, 0],
+            rotate: [0, 90, 180, 270, 360],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <FaGuitar className="w-full h-full text-purple-400" />
+        </motion.div>
+        
+        <motion.div
+          className="absolute top-32 right-20 w-20 h-20 opacity-15"
+          animate={{
+            x: [0, -80, -160, -80, 0],
+            y: [0, 80, -40, 120, 0],
+            rotate: [0, -90, -180, -270, -360],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        >
+          <FaGuitar className="w-full h-full text-blue-400" />
+        </motion.div>
+        
+        <motion.div
+          className="absolute bottom-20 left-1/4 w-14 h-14 opacity-12"
+          animate={{
+            x: [0, 120, -60, 180, 0],
+            y: [0, -100, 80, -60, 0],
+            rotate: [0, 180, 90, 270, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        >
+          <FaGuitar className="w-full h-full text-pink-400" />
+        </motion.div>
+        
+        <motion.div
+          className="absolute bottom-40 right-1/3 w-18 h-18 opacity-8"
+          animate={{
+            x: [0, -150, 100, -50, 0],
+            y: [0, 70, -90, 140, 0],
+            rotate: [0, 45, 135, 225, 360],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 6
+          }}
+        >
+          <FaGuitar className="w-full h-full text-green-400" />
+        </motion.div>
+
+        {/* Enhanced Floating Music Icons */}
         {floatingIcons.map((item, index) => {
           const Icon = item.icon
           return (
             <motion.div
               key={index}
-              className="absolute text-gray-400/20"
+              className="absolute text-gray-300/15"
               initial={{ 
                 x: Math.random() * 100 - 50,
                 y: Math.random() * 100 - 50 
               }}
               animate={{
-                x: [null, Math.random() * 200 - 100, Math.random() * 100 - 50],
-                y: [null, Math.random() * 200 - 100, Math.random() * 100 - 50],
+                x: [null, Math.random() * 300 - 150, Math.random() * 200 - 100],
+                y: [null, Math.random() * 300 - 150, Math.random() * 200 - 100],
                 rotate: [0, 180, 360],
+                scale: [1, 1.2, 0.8, 1],
               }}
               transition={{
-                duration: item.duration,
+                duration: item.duration + 2,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: item.delay
               }}
               style={{
-                left: `${20 + index * 15}%`,
-                top: `${20 + (index % 3) * 20}%`,
+                left: `${15 + index * 18}%`,
+                top: `${15 + (index % 4) * 20}%`,
               }}
             >
-              <Icon className="w-16 h-16 md:w-24 md:h-24" />
+              <Icon className="w-12 h-12 md:w-16 md:h-16" />
             </motion.div>
           )
         })}
+        
+        {/* Musical Notes Floating */}
+        <motion.div
+          className="absolute top-1/4 left-1/3 text-4xl text-purple-200/20"
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 10, -10, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          ♪
+        </motion.div>
+        
+        <motion.div
+          className="absolute top-3/4 right-1/4 text-5xl text-blue-200/20"
+          animate={{
+            y: [0, -30, 0],
+            rotate: [0, -15, 15, 0],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        >
+          ♫
+        </motion.div>
+        
+        <motion.div
+          className="absolute bottom-1/3 left-1/5 text-3xl text-pink-200/20"
+          animate={{
+            y: [0, -25, 0],
+            x: [0, 10, -10, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        >
+          ♪
+        </motion.div>
       </div>
 
-      <div className="relative z-10 py-8 px-4">
+      <div className="relative z-10 py-16 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <motion.div 
@@ -140,7 +257,7 @@ export default function Contact() {
                     whileHover={{ scale: 1.02, x: 8 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-4 hover:bg-white transition-all duration-500 group-hover:border-purple-400/50 shadow-lg hover:shadow-xl">
+                    <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl p-4 hover:bg-white transition-all duration-500 group-hover:border-purple-400/50 shadow-lg hover:shadow-xl">
                       <div className="flex items-center gap-3">
                         <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center shadow-lg`}>
                           <item.icon className="text-white text-lg" />
@@ -162,9 +279,9 @@ export default function Contact() {
               </div>
 
               {/* Image below Visit Studio */}
-              <div className="relative w-full h-16 rounded-lg overflow-hidden">
+              <div className="relative w-full h-40 rounded-lg overflow-hidden">
                 <Image 
-                  src="/images/music5.jpg" 
+                  src="/images/music2.jpg" 
                   alt="Music Studio"
                   fill
                   className="object-cover rounded-lg"
@@ -179,7 +296,7 @@ export default function Contact() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-2xl">
+              <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-2xl">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">Send us a Message</h2>
                   <p className="text-gray-600 text-sm">We typically respond within 2 hours</p>

@@ -1,4 +1,4 @@
-import { Bebas_Neue, Inter } from 'next/font/google'
+import { Bebas_Neue, Inter, Oswald } from 'next/font/google'
 
 export const display = Bebas_Neue({
   subsets: ['latin'],
@@ -9,4 +9,10 @@ export const display = Bebas_Neue({
 export const sans = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
+})
+
+export const oswald = Oswald({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700'],
+  variable: '--font-oswald',
 })

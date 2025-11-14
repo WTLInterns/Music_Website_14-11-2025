@@ -76,12 +76,12 @@ export default function Navbar() {
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center">
               {/* Logo Image with increased width */}
-              <div className="relative h-12 w-32 rounded-lg overflow-hidden">
+              <div className="relative h-12  w-32 rounded-lg overflow-hidden p-8 hover:animate-musicPulse transition-all duration-300">
                 <Image 
                   src="/images/music1.jpg" 
                   alt="MusicKatta Logo"
                   fill
-                  className="object-cover"
+                  className="osbject-cover"
                   priority
                 />
               </div>
@@ -91,7 +91,7 @@ export default function Navbar() {
                 <Link 
                   key={link.href} 
                   href={link.href} 
-                  className="text-white/80 hover:text-white relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-pink-500 after:transition-all hover:after:w-full transition-colors duration-200"
+                  className="text-white/80 hover:text-white relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-pink-500 after:transition-all hover:after:w-full transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 font-oswald font-semibold tracking-wide"
                 >
                   {link.label}
                 </Link>
@@ -153,22 +153,22 @@ export default function Navbar() {
               // Show login button when not logged in - REDIRECTS TO SEPARATE LOGIN PAGE
               <Link 
                 href="/login"
-                className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-lg btn-glow font-oswald font-bold tracking-wide uppercase"
               >
                 Login
               </Link>
             )}
             
-            <a className="text-white/80 hover:text-white transition-colors" href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">
-              <FaYoutube className="h-5 w-5 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)] hover:scale-110 transition-transform" />
+            <a className="text-white/80 hover:text-white transition-all duration-300 hover:scale-125 hover:-translate-y-1" href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">
+              <FaYoutube className="h-5 w-5 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)] hover:drop-shadow-[0_0_15px_rgba(239,68,68,0.9)] transition-all duration-300 animate-bounceIcon" />
             </a>
-            <a className="text-white/80 hover:text-white transition-colors" href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
-              <FaInstagram className="h-5 w-5 drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] hover:scale-110 transition-transform" />
+            <a className="text-white/80 hover:text-white transition-all duration-300 hover:scale-125 hover:-translate-y-1" href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <FaInstagram className="h-5 w-5 drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.9)] transition-all duration-300 animate-bounceIcon" />
             </a>
-            <button className="md:hidden ml-2 p-2 rounded bg-white/5 border border-white/10" onClick={() => setOpen(!open)} aria-label="Menu">
-              <div className="w-5 h-0.5 bg-white mb-1" />
-              <div className="w-5 h-0.5 bg-white mb-1" />
-              <div className="w-5 h-0.5 bg-white" />
+            <button className="md:hidden ml-2 p-2 rounded bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-110 animate-musicPulse" onClick={() => setOpen(!open)} aria-label="Menu">
+              <div className="w-5 h-0.5 bg-white mb-1 transition-all duration-300" />
+              <div className="w-5 h-0.5 bg-white mb-1 transition-all duration-300" />
+              <div className="w-5 h-0.5 bg-white transition-all duration-300" />
             </button>
           </div>
         </div>

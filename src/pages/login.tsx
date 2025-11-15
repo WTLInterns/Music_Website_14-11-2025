@@ -10,6 +10,12 @@ export default function Login() {
   const [mobileNo, setMobileNo] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleGoogleLogin = () => {
+    if (typeof window !== "undefined") {
+      window.location.href = "http://localhost:8085/auth/google";
+    }
+  };
+
   const handleClose = () => {
     router.push("/");
   };
@@ -179,6 +185,7 @@ export default function Login() {
                 <button
                   type="button"
                   className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-all duration-200 text-sm font-semibold text-gray-700 shadow-sm hover:shadow-md"
+                  onClick={handleGoogleLogin}
                 >
                   <>
                     <FaGoogle className="w-4 h-4 text-red-500" />

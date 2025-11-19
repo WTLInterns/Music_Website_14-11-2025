@@ -47,7 +47,7 @@ export default function Register() {
 
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8085/auth/register", {
+      const response = await fetch("http://localhost:8085/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -9,8 +9,47 @@ const LS_PURCHASES_KEY = 'mk_purchases' // map of userId -> string[] courseIds
 
 export function getCurrentUser(): User | null {
   if (typeof window === 'undefined') return null
-  const raw = localStorage.getItem(LS_USER_KEY)
-  return raw ? (JSON.parse(raw) as User) : null
+
+  // Primary source: internal mk_user used by demo auth/purchases
+  const rawInternal = localStorage.getItem(LS_USER_KEY)
+  if (rawInternal) {
+    try {
+      return JSON.parse(rawInternal) as User
+    } catch {
+      // fall through and try unified user object
+    }
+  }
+
+  // Fallback: unified `user` object set by real login flows (email / Google)
+  const rawUnified = localStorage.getItem('user')
+  if (!rawUnified) return null
+
+  try {
+    const unified = JSON.parse(rawUnified) as {
+      email?: string
+      name?: string
+      isLoggedIn?: boolean
+    }
+
+    if (!unified?.isLoggedIn || !unified.email) return null
+
+    const user: User = {
+      id: unified.email, // stable id based on email
+      name: unified.name || unified.email.split('@')[0] || 'Student',
+      email: unified.email,
+    }
+
+    // Persist so subsequent calls use mk_user directly
+    try {
+      localStorage.setItem(LS_USER_KEY, JSON.stringify(user))
+    } catch {
+      // ignore storage errors; user object is still usable in-memory
+    }
+
+    return user
+  } catch {
+    return null
+  }
 }
 
 export function isLoggedIn(): boolean {
@@ -46,7 +85,13 @@ export function login(email: string): User {
 
 export function logout() {
   if (typeof window === 'undefined') return
-  localStorage.removeItem(LS_USER_KEY)
+  // Clear both internal and unified user representations
+  try {
+    localStorage.removeItem(LS_USER_KEY)
+    localStorage.removeItem('user')
+  } catch {
+    // ignore storage errors
+  }
 }
 
 export function getAllPurchases(): Record<string, string[]> {

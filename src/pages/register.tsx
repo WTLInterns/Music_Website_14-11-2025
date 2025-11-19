@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,10 +19,29 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
+  // Check if user is already logged in
+  useEffect(() => {
+    // Check if user is logged in
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        if (userData.isLoggedIn) {
+          // Show success message and redirect to home page
+          localStorage.setItem("registrationSuccess", "true");
+          localStorage.setItem("registrationMessage", "Account created successfully! Redirecting to home page...");
+          router.push("/");
+        }
+      } catch (e) {
+        console.error("Error parsing user data:", e);
+      }
+    }
+  }, [router]);
+
   const handleGoogleLogin = () => {
     setIsGoogleLoading(true);
     // Redirect to backend Google OAuth endpoint
-    window.location.href = 'http://localhost:8085/auth/google/login';
+    window.location.href = 'http://localhost:8085/auth/google';
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -74,12 +93,12 @@ export default function Register() {
         return;
       }
 
-      // Store success message in localStorage to show on login page
+      // Store success message in localStorage to show on success page
       localStorage.setItem("registrationSuccess", "true");
-      localStorage.setItem("registrationMessage", "Account created successfully! Please log in.");
+      localStorage.setItem("registrationMessage", "Account created successfully! You can now access all features of MusicKatta.");
 
-      // Redirect to login page
-      router.push("/login");
+      // Redirect to success page
+      router.push("/register/success");
     } catch (err) {
       setError("Registration failed. Please try again.");
     } finally {

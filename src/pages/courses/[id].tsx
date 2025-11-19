@@ -4,7 +4,6 @@ import Accordion from '@components/Accordion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { isLoggedIn } from '@lib/auth'
 
 import { 
   FaClock, 
@@ -198,8 +197,24 @@ export default function CourseDetail() {
     const courseId = course.courseId
     if (!courseId) return
 
-    if (!isLoggedIn()) {
-      router.push(`/enroll?course=${courseId}`)
+    let loggedIn = false
+
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser)
+          if (userData && userData.isLoggedIn) {
+            loggedIn = true
+          }
+        } catch {
+          // ignore parse errors and treat as not logged in
+        }
+      }
+    }
+
+    if (!loggedIn) {
+      router.push('/login')
     } else {
       router.push(`/payment?course=${courseId}`)
     }

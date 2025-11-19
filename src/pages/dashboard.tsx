@@ -14,20 +14,20 @@ export default function Dashboard() {
     // Check if user is logged in
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
-      router.push("/login");
+      router.push("/");
       return;
     }
 
     try {
       const userData = JSON.parse(storedUser);
       if (!userData.isLoggedIn) {
-        router.push("/login");
+        router.push("/");
         return;
       }
       setUser(userData);
     } catch (e) {
       console.error("Error parsing user data:", e);
-      router.push("/login");
+      router.push("/");
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <Navbar />
+      {/* <Navbar /> */}
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
@@ -60,26 +60,38 @@ export default function Dashboard() {
                 <h2 className="text-xl font-bold text-gray-800 mb-4">My Profile</h2>
                 
                 <div className="flex flex-col items-center">
-                  {user.profilePicture ? (
+                  {user.profile ? (
                     <img 
-                      src={user.profilePicture} 
-                      alt={user.username} 
-                      className="w-24 h-24 rounded-full object-cover border-4 border-indigo-100 mb-4"
+                      src={user.profile} 
+                      alt={user.name} 
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl mb-6"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl font-bold mb-4">
-                      {user.username?.charAt(0)?.toUpperCase() || 'U'}
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold mb-6 shadow-xl border-4 border-white">
+                      {user.name?.charAt(0)?.toUpperCase() || 'U'}
                     </div>
                   )}
                   
-                  <h3 className="text-xl font-semibold text-gray-800">{user.username}</h3>
-                  <p className="text-gray-600">{user.email}</p>
+                  <h3 className="text-2xl font-bold text-gray-800">Welcome Back!</h3>
+                  <h4 className="text-xl font-semibold text-gray-700 mt-1">{user.name}</h4>
+                  <p className="text-gray-600 mt-2">{user.email}</p>
                   {user.mobileNo && (
                     <p className="text-gray-600 mt-1">Phone: {user.mobileNo}</p>
                   )}
                   
+                  <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 w-full">
+                    <div className="flex items-center">
+                      <svg className="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="ml-2 text-sm font-medium text-blue-800">
+                        You're logged in with {user.loginMethod === 'google' ? 'Google' : 'Email'}
+                      </span>
+                    </div>
+                  </div>
+                  
                   <div className="mt-6 w-full">
-                    <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg transition-colors">
+                    <button className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white py-3 px-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-semibold">
                       Edit Profile
                     </button>
                   </div>

@@ -15,12 +15,40 @@ export default function Navbar() {
   // Check if user is logged in
   useEffect(() => {
     const storedUser = localStorage.getItem("user")
+    const storedToken = localStorage.getItem("authToken")
     if (storedUser) {
       try {
         const userData = JSON.parse(storedUser)
         if (userData.isLoggedIn) {
           setIsLoggedIn(true)
           setUser(userData)
+
+          const validateToken = async () => {
+            try {
+              if (!userData.email || !storedToken) {
+                handleLogout()
+                return
+              }
+
+              const response = await fetch(`http://localhost:8085/api/users/by-email?email=${encodeURIComponent(userData.email)}`)
+
+              if (!response.ok) {
+                handleLogout()
+                return
+              }
+
+              const backendUser = await response.json()
+
+              if (!backendUser || !backendUser.authToken || backendUser.authToken !== storedToken) {
+                handleLogout()
+              }
+            } catch (error) {
+              console.error("Error validating auth token:", error)
+              handleLogout()
+            }
+          }
+
+          validateToken()
         }
       } catch (e) {
         console.error("Error parsing user data:", e)
@@ -47,6 +75,7 @@ export default function Navbar() {
     localStorage.removeItem("user")
     localStorage.removeItem("userId")
     localStorage.removeItem('mk_user')
+    localStorage.removeItem("authToken")
     
     // Update state
     setIsLoggedIn(false)

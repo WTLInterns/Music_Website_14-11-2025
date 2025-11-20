@@ -81,16 +81,20 @@ export default function Login() {
         throw new Error(data.message || "Login failed");
       }
 
-      // Store user data in localStorage
+      // Store user data in localStorage (including authToken from backend)
       const userData = {
         email: data.email,
         name: `${data.firstName || ''} ${data.lastName || ''}`.trim(),
         profile: data.profile || null,
         isLoggedIn: true,
-        loginMethod: "email"
+        loginMethod: "email",
+        authToken: data.authToken || null,
       };
 
       localStorage.setItem("user", JSON.stringify(userData));
+      if (data.authToken) {
+        localStorage.setItem("authToken", data.authToken);
+      }
       
       // Redirect to home page
       router.push("/");

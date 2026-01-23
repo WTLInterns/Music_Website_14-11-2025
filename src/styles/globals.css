@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b0b12;
+  --fg: #f6f6f9;
+  --grid: rgba(255,255,255,0.04);
+}
+
+html, body, #__next {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-gray-950 text-white antialiased font-sans font-medium;
+  background-image: url('/images/bg-music-waves.svg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.container-px {
+  @apply px-4 sm:px-6 lg:px-8;
+}
+
+/* Guitar-themed hero background (non-intrusive) */
+.guitar-hero-bg {
+  /* Layer 1: subtle neon gradient overlay */
+  background-image:
+    linear-gradient(135deg, rgba(99,102,241,0.35), rgba(236,72,153,0.28), rgba(250,204,21,0.18)),
+    url('/images/pattern-guitar.svg');
+  background-size: cover, 200px 200px;
+  background-repeat: no-repeat, repeat;
+  background-position: center, top left;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-5 py-2.5 font-semibold shadow-md transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed;
+}
+.btn-primary {
+  @apply bg-gradient-to-r from-brand-600 to-pink-500 hover:from-brand-500 hover:to-pink-400 text-white shadow-glow;
+}
+.btn-outline {
+  @apply border border-white/20 hover:border-white/40 text-white/90 bg-white/5 backdrop-blur;
+}
+
+.card {
+  @apply rounded-xl bg-white/5 backdrop-blur shadow-card border border-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-white/20;
+}
+.card-hover {
+  @apply transition-transform duration-150 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-900/20;
+}
+
+.nav-link { @apply text-white/80 hover:text-white transition-colors; }
+
+.section-title { @apply text-3xl md:text-4xl font-extrabold tracking-tight font-display; }
+.section-subtitle { @apply text-white/70; }
+
+/* Glass header */
+.glass {
+  @apply backdrop-blur bg-black/30 border border-white/10;
+}
+
+/* Hero overlay */
+.hero-overlay {
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.25), transparent),
+              radial-gradient(1200px 600px at 90% 30%, rgba(244,114,182,0.2), transparent);
+}
+
+/* Equalizer bars */
+.eq-bar { 
+  @apply w-1.5 bg-neon-yellow rounded-full origin-bottom transition-all duration-300 hover:bg-red-500; 
+  box-shadow: 0 0 10px rgba(250,204,21,0.5);
+}
+
+.eq-bar:hover {
+  box-shadow: 0 0 20px rgba(239,68,68,0.8);
+}
+
+/* Gradient text */
+.text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-400 via-pink-400 to-yellow-300; }
+
+/* Neon tab styles */
+.tab-active { @apply bg-white/10 text-white shadow-glow; }
+.tab-idle { @apply text-white/60 hover:text-white; }
+
+/* Floating notes background */
+.notes-bg {
+  position: relative;
+}
+.notes-bg:before,
+.notes-bg:after {
+  content: '♪';
+  position: absolute;
+  color: rgba(255,255,255,0.15);
+  font-size: 48px;
+  animation: float 6s ease-in-out infinite;
+  z-index: -1;
+}
+.notes-bg:after { content: '♫'; left: 80%; top: 20%; animation-delay: 1s; }
+
+/* Additional floating notes */
+.notes-bg::before {
+  left: 10%;
+  top: 30%;
+}
+
+/* Pulse animation for music elements */
+.music-pulse {
+  animation: musicPulse 2s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+/* Beat animation */
+.beat-animation {
+  animation: beat 1.5s ease-in-out infinite;
+}
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.02); }
+  50% { transform: scale(1.05); }
+  75% { transform: scale(1.02); }
+}
+
+/* Glow effect for buttons */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-glow:hover::before {
+  left: 100%;
+}
+
+/* Shimmer effect */
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Bounce animation for icons */
+.bounce-icon {
+  animation: bounceIcon 2s ease-in-out infinite;
+}
+
+@keyframes bounceIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Wavy animation for underlines */
+@keyframes wavy {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  25% { transform: translateX(-50%) translateY(-2px) rotate(2deg); }
+  50% { transform: translateX(-50%) translateY(0) rotate(-2deg); }
+  75% { transform: translateX(-50%) translateY(2px) rotate(2deg); }
+}

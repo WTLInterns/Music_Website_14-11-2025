@@ -313,6 +313,19 @@ export default function Home() {
     return () => clearInterval(id)
   }, [testimonials.length])
 
+  const [isMobileHero, setIsMobileHero] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const mq = window.matchMedia('(max-width: 768px)')
+    const apply = () => setIsMobileHero(mq.matches)
+
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
   return (
     <div className="w-full">
       {/* Home Section - Full Width */}
@@ -321,6 +334,7 @@ export default function Home() {
         className="anchor-section relative overflow-hidden w-full min-h-[90vh]"
         onMouseEnter={() => setIsHeroHover(true)}
         onMouseMove={(e) => {
+          if (isMobileHero) return
           const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
           const px = (e.clientX - rect.left) / rect.width - 0.5
           const py = (e.clientY - rect.top) / rect.height - 0.5
@@ -334,15 +348,15 @@ export default function Home() {
         }}
       >
         {/* Background Image with Next.js Image component */}
-        <motion.div className="absolute inset-0 w-full h-[90vh]" style={{ x: bgX, y: bgY }}>
+        <motion.div className="absolute inset-0 w-full h-[90vh]" style={isMobileHero ? undefined : ({ x: bgX, y: bgY } as any)}>
           <Image
             src="/images/music2.jpg"
             alt="Music Background"
             fill
-            className="object-cover w-full"
+            className="object-cover w-full object-[55%_center] md:object-center"
             priority
           />
-          <div className="absolute inset-0 hero-overlay" />
+          <div className="absolute inset-0 hero-overlay opacity-0 md:opacity-100" />
         </motion.div>
 
         <motion.div
@@ -419,8 +433,8 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl font-oswald font-bold leading-tight mb-4 tracking-wide"
             >
-              <span className="text-white font-extrabold">Feel the Music.</span>{' '}
-              <span className="text-white font-extrabold">Learn the Art.</span>{' '}
+              <span className="text-black md:text-white font-extrabold">Feel the Music.</span>{' '}
+              <span className="text-black md:text-white font-extrabold">Learn the Art.</span>{' '}
               <span className="bg-gradient-to-b from-yellow-500 via-orange-600 to-red-600 bg-clip-text text-transparent font-black">Join Muziik Katta.</span>
             </motion.h1>
             
@@ -428,7 +442,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-xl font-oswald font-medium tracking-wide"
+              className="text-lg md:text-xl text-white md:text-gray-200 mb-8 leading-relaxed max-w-xl font-oswald font-medium tracking-wide"
             >
               Premium courses and OffLine Classes with a modern, performance-first curriculum.
             </motion.p>
@@ -1248,7 +1262,7 @@ export default function Home() {
           </motion.div>
 
           {/* Footer Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-10 mb-12">
             
             {/* Our Impact */}
             <motion.div 
@@ -1387,25 +1401,25 @@ export default function Home() {
               </h3>
               <div className="space-y-3">
                 <motion.div 
-                  className="flex items-center gap-3 text-gray-600 hover:text-gray-800 transition-colors"
+                  className="flex items-start gap-3 text-gray-600 hover:text-gray-800 transition-colors"
                   whileHover={{ scale: 1.05 }}
                 >
                   <FaPhone className="text-green-500" />
-                  <span className="text-sm font-medium">+91 9712926885</span>
+                  <span className="text-sm font-medium break-words">+91 9712926885</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center gap-3 text-gray-600 hover:text-gray-800 transition-colors"
+                  className="flex items-start gap-3 text-gray-600 hover:text-gray-800 transition-colors"
                   whileHover={{ scale: 1.05 }}
                 >
                   <FaEnvelope className="text-blue-500" />
-                  <span className="text-sm font-medium">dhavalmulay@gmail.com</span>
+                  <span className="text-sm font-medium break-words">dhavalmulay@gmail.com</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center gap-3 text-gray-600 hover:text-gray-800 transition-colors"
+                  className="flex items-start gap-3 text-gray-600 hover:text-gray-800 transition-colors"
                   whileHover={{ scale: 1.05 }}
                 >
                   <FaMapMarkerAlt className="text-red-500" />
-                  <span className="text-sm font-medium">Sagar Plot no.17 Parashar hsg soc Nr down town Langstone, Kharadi, Pune, Maharashtra 411014</span>
+                  <span className="text-sm font-medium break-words leading-relaxed">Sagar Plot no.17 Parashar hsg soc Nr down town Langstone, Kharadi, Pune, Maharashtra 411014</span>
                 </motion.div>
               </div>
 
@@ -1449,15 +1463,15 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.7 }}
           >
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-gray-700 flex items-center gap-2 font-oswald font-semibold">
-                © {new Date().getFullYear()}{' '}
+              <p className="text-gray-700 flex flex-wrap items-center justify-center md:justify-start gap-2 font-oswald font-semibold text-center md:text-left">
+                {new Date().getFullYear()}{' '}
                 <span className="bg-gradient-to-b from-yellow-500 via-orange-600 to-red-600 bg-clip-text text-transparent font-black">
                   Muziik Katta
                 </span>
                 . All rights reserved. Made with <FaHeart className="text-red-500 animate-pulse" /> for{' '}
                 <span className="text-purple-600 font-bold">music lovers</span>.
               </p>
-              <div className="flex gap-6 text-sm text-gray-600">
+              <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 text-sm text-gray-600">
                 <Link href="/privacy-policy" className="hover:text-purple-600 transition-colors font-oswald font-semibold hover:bg-purple-50 px-2 py-1 rounded">Privacy Policy</Link>
                 <Link href="/terms" className="hover:text-blue-600 transition-colors font-oswald font-semibold hover:bg-blue-50 px-2 py-1 rounded">Terms & Conditions</Link>
                 <Link href="/refund-policy" className="hover:text-blue-600 transition-colors font-oswald font-semibold hover:bg-blue-50 px-2 py-1 rounded">Refund Policy</Link>
@@ -1472,7 +1486,7 @@ export default function Home() {
 
       {/* WhatsApp Floating Button */}
       <a 
-        href="https://wa.me/91XXXXXXXXXX" 
+        href="https://wa.me/919712926885" 
         target="_blank" 
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-110 md:bottom-8 md:right-8"

@@ -128,12 +128,6 @@
 //               🥁
 //             </motion.span>
 //           </motion.div>
-//         </div>
-//       </motion.div>
-//     </div>
-//   )
-// }
-
 import Link from 'next/link'
 import { useEffect } from 'react'
 import confetti from 'canvas-confetti'
@@ -163,6 +157,14 @@ export default function PaymentSuccess() {
       console.log('Enrolled course stored:', course)
     }
   }, [course])
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      router.replace('/my-courses')
+    }, 1200)
+
+    return () => window.clearTimeout(id)
+  }, [router])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 flex items-center justify-center p-4">
@@ -215,10 +217,10 @@ export default function PaymentSuccess() {
             transition={{ delay: 0.8, duration: 0.6 }}
           >
             <Link 
-              href="/CourseVideo" 
+              href="/my-courses" 
               className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              <span>Go to Dashboard</span>
+              <span>Go to My Courses</span>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

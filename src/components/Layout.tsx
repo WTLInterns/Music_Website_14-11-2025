@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </div>
       
       <Navbar />
-      <main className="flex-1 container-px mx-auto w-full max-w-10xl notes-bg relative z-10">{children}</main>
+      <main className="flex-1 w-full notes-bg relative z-10">{children}</main>
       <Footer />
     </div>
   )

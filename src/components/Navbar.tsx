@@ -101,7 +101,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 glass bg-gradient-to-b from-black/40 to-black/10">
-      <div className="container mx-auto px-4 sm:px-6">
+      <div className="w-full px-0">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center">

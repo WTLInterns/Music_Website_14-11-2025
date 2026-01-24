@@ -21,7 +21,7 @@ body {
 }
 
 .container-px {
-  @apply px-4 sm:px-6 lg:px-8;
+  @apply px-0;
 }
 
 /* Guitar-themed hero background (non-intrusive) */

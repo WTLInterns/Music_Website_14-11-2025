@@ -442,7 +442,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-[#d41414] sm:text-white md:text-gray-200 mb-8 leading-relaxed max-w-xl font-oswald font-medium tracking-wide"
+              className="hidden md:block text-lg md:text-xl text-[#d41414] md:text-gray-200 mb-8 leading-relaxed max-w-xl font-oswald font-medium tracking-wide"
             >
               Premium courses and OffLine Classes with a modern, performance-first curriculum.
             </motion.p>
@@ -759,7 +759,10 @@ export default function Home() {
                 { id: 3, src: '/images/acheivement/studentvideo3.mp4', title: 'Guitar Performance' },
                 { id: 4, src: '/images/acheivement/studentvideo4.mp4', title: 'Keyboard Performance' },
                 { id: 5, src: '/images/acheivement/studentvideo5.mp4', title: 'Guitar Performance' },
-                { id: 6, src: '/images/acheivement/studentvideo6.mp4', title: 'Guitar Performance' }
+                { id: 6, src: '/images/acheivement/studentvideo6.mp4', title: 'Guitar Performance' },
+                                { id: 7, src: '/images/acheivement/studentvideo7.mp4', title: 'Guitar Performance' },
+                { id: 8, src: '/images/acheivement/studentvideo8.mp4', title: 'Guitar Performance' }
+
 
 
               ].map((video, index) => (
@@ -1412,7 +1415,7 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                 >
                   <FaEnvelope className="text-blue-500" />
-                  <span className="text-sm font-medium break-words">dhavalmulay@gmail.com</span>
+                  <span className="text-sm font-medium break-words">ddhavalmulay@gmail.com</span>
                 </motion.div>
                 <motion.div 
                   className="flex items-start gap-3 text-gray-600 hover:text-gray-800 transition-colors"

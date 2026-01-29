@@ -227,9 +227,9 @@ export default function Contact() {
                     icon: FaEnvelope,
                     title: "Email Us",
                     description: "Detailed inquiries",
-                    detail: "dhavalmulay@gmail.com",
+                    detail: "ddhavalmulay@gmail.com",
                     color: "from-blue-500 to-cyan-600",
-                    link: "mailto:dhavalmulay@gmail.com"
+                    link: "mailto:ddhavalmulay@gmail.com"
                   },
                   {
                     icon: FaPhone,

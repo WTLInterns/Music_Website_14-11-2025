@@ -356,7 +356,7 @@ export default function Home() {
             className="object-cover w-full object-[55%_center] md:object-center"
             priority
           />
-          <div className="absolute inset-0 hero-overlay opacity-0 md:opacity-100" />
+          <div className="absolute inset-0 hero-overlay opacity-0 sm:opacity-100" />
         </motion.div>
 
         <motion.div
@@ -442,7 +442,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-white md:text-gray-200 mb-8 leading-relaxed max-w-xl font-oswald font-medium tracking-wide"
+              className="text-lg md:text-xl text-[#d41414] sm:text-white md:text-gray-200 mb-8 leading-relaxed max-w-xl font-oswald font-medium tracking-wide"
             >
               Premium courses and OffLine Classes with a modern, performance-first curriculum.
             </motion.p>

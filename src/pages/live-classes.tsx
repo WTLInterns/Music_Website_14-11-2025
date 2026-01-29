@@ -125,14 +125,14 @@ Join upcoming offline sessions and connect with the world through music.        
                   </div>
                   
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 grid place-content-center">
+                  {/* <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 grid place-content-center">
                     <div className="text-center text-white">
                       <div className="h-8 w-8 rounded-full bg-white/90 text-black grid place-content-center shadow transform group-hover:scale-110 transition-transform duration-300 mx-auto mb-1">
                         <FaPlay className="w-3 h-3" />
                       </div>
                       <div className="text-xs">Watch</div>
                     </div>
-                  </div>
+                  </div> */}
                 </motion.div>
               ))}
             </div>

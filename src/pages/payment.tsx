@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY_ID = 'rzp_test_ZzKJz2egIV36gC' // Test key; secret must stay on backend
+const RAZORPAY_KEY_ID = 'rzp_live_SA1BO5eO5IVyuT' // Test key; secret must stay on backend
 
 export default function PaymentPage() {
   const router = useRouter()

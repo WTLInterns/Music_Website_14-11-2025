@@ -425,7 +425,7 @@ export default function Home() {
         </motion.div>
         
         {/* Content Container - Aligned to Left */}
-        <div className="relative w-full h-full flex items-center pt-20">
+        <div className="relative w-full h-full flex items-center pt-12 md:pt-16 lg:pt-20">
           <motion.div className="px-8 md:px-16 lg:px-24 py-16 md:py-24 text-left max-w-2xl" style={{ x: textX, y: textY }}>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -433,8 +433,8 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl font-oswald font-bold leading-tight mb-4 tracking-wide"
             >
-              <span className="text-black md:text-white font-extrabold">Feel the Music.</span>{' '}
-              <span className="text-black md:text-white font-extrabold">Learn the Art.</span>{' '}
+              <span className="text-black md:text-white font-extrabold bg-gradient-to-b from-yellow-500 via-orange-600 to-red-600 bg-clip-text text-transparent font-black lg:text-white lg:bg-none">Feel the Music.</span>{' '}
+              <span className="text-black md:text-white font-extrabold bg-gradient-to-b from-yellow-500 via-orange-600 to-red-600 bg-clip-text text-transparent font-black lg:text-white lg:bg-none">Learn the Art.</span>{' '}
               <span className="bg-gradient-to-b from-yellow-500 via-orange-600 to-red-600 bg-clip-text text-transparent font-black">Join Muziik Katta.</span>
             </motion.h1>
             

@@ -24,7 +24,7 @@ export default function CourseCard({ course }: { course: Course }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute bottom-3 left-4 right-4">
           <h3 className="text-lg font-bold drop-shadow text-white">{course.title}</h3>
-          <p className="text-white/70 text-sm">By Ddhavval Mulay</p>
+          <p className="text-white/70 text-sm">By Dhavval Mulay</p>
         </div>
       </div>
       <div className="p-5 space-y-3">

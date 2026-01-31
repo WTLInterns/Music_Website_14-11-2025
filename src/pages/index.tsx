@@ -757,10 +757,10 @@ export default function Home() {
                 { id: 1, src: '/images/acheivement/studentvideo1.mp4', title: 'Guitar Performance' },
                 { id: 2, src: '/images/acheivement/studentvideo2.mp4', title: 'Guitar Performance' },
                 { id: 3, src: '/images/acheivement/studentvideo3.mp4', title: 'Guitar Performance' },
-                { id: 4, src: '/images/acheivement/studentvideo4.mp4', title: 'Keyboard Performance' },
+                { id: 4, src: '/images/acheivement/studentvideo4.mp4', title: 'Keyboard Performance'},
                 { id: 5, src: '/images/acheivement/studentvideo5.mp4', title: 'Guitar Performance' },
                 { id: 6, src: '/images/acheivement/studentvideo6.mp4', title: 'Guitar Performance' },
-                                { id: 7, src: '/images/acheivement/studentvideo7.mp4', title: 'Guitar Performance' },
+                { id: 7, src: '/images/acheivement/studentvideo7.mp4', title: 'Guitar Performance' },
                 { id: 8, src: '/images/acheivement/studentvideo8.mp4', title: 'Guitar Performance' }
 
 

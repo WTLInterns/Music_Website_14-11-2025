@@ -29,20 +29,15 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [hasUserInteracted, setHasUserInteracted] = useState(false)
+  const [videoError, setVideoError] = useState(false)
   const { currentPlayingIndex, setCurrentPlayingIndex } = useContext(VideoContext)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const wasVisible = isVisible
           setIsVisible(entry.isIntersecting)
-          
-          // When this video becomes visible and no video is playing, start this one
-          if (entry.isIntersecting && !wasVisible && currentPlayingIndex === null) {
-            console.log(`Video ${index} became visible, starting playback`)
-            setCurrentPlayingIndex(index)
-          }
         })
       },
       { threshold: 0.5 }
@@ -52,7 +47,6 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
       observer.observe(videoRef.current)
     }
 
-    // Capture the video element to use in cleanup
     const videoElement = videoRef.current;
     
     return () => {
@@ -60,28 +54,47 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
         observer.unobserve(videoElement)
       }
     }
-  }, [isVisible, currentPlayingIndex, index, setCurrentPlayingIndex])
+  }, [])
 
   useEffect(() => {
     if (videoRef.current) {
-      if (currentPlayingIndex === index && isVisible) {
-        // This video should be playing
+      if (currentPlayingIndex === index && isVisible && hasUserInteracted) {
+        // This video should be playing and user has interacted
         console.log(`Playing video ${index}`)
-        videoRef.current.play().catch(error => {
-          console.log('Autoplay was prevented:', error)
-        })
-        setIsPlaying(true)
+        const attemptPlay = async () => {
+          try {
+            videoRef.current!.muted = false
+            await videoRef.current!.play()
+            setIsPlaying(true)
+          } catch (error) {
+            console.log('Unmuted autoplay failed, trying muted:', error)
+            try {
+              videoRef.current!.muted = true
+              await videoRef.current!.play()
+              setIsPlaying(true)
+              console.log('Video playing muted due to browser policy')
+            } catch (mutedError) {
+              console.error('Play failed completely:', mutedError)
+              setIsPlaying(false)
+              setCurrentPlayingIndex(null)
+            }
+          }
+        }
+        
+        attemptPlay()
       } else {
         // This video should not be playing
         console.log(`Pausing video ${index}`)
         videoRef.current.pause()
-        videoRef.current.currentTime = 0
         setIsPlaying(false)
       }
     }
-  }, [currentPlayingIndex, index, isVisible])
+  }, [currentPlayingIndex, index, isVisible, hasUserInteracted])
 
   const handlePlay = () => {
+    setHasUserInteracted(true)
+    setVideoError(false)
+    
     if (videoRef.current) {
       if (currentPlayingIndex === index) {
         // Stop this video
@@ -89,11 +102,42 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
         setCurrentPlayingIndex(null)
         setIsPlaying(false)
       } else {
-        // Play this video, stop others
-        setCurrentPlayingIndex(index)
-        setIsPlaying(true)
+        // Try unmuted first, fallback to muted if it fails
+        const tryUnmutedPlay = async () => {
+          try {
+            videoRef.current!.muted = false
+            await videoRef.current!.play()
+            setCurrentPlayingIndex(index)
+            setIsPlaying(true)
+          } catch (error) {
+            console.log('Unmuted play failed, trying muted:', error)
+            try {
+              videoRef.current!.muted = true
+              await videoRef.current!.play()
+              setCurrentPlayingIndex(index)
+              setIsPlaying(true)
+              // Show toast or notification that video is muted
+              console.log('Video playing muted due to browser policy')
+            } catch (mutedError) {
+              console.error('Both unmuted and muted play failed:', mutedError)
+              setVideoError(true)
+            }
+          }
+        }
+        
+        tryUnmutedPlay()
       }
     }
+  }
+
+  const handleVideoError = () => {
+    console.error(`Video ${index} failed to load:`, src)
+    setVideoError(true)
+    setIsPlaying(false)
+  }
+
+  const handleVideoLoad = () => {
+    setVideoError(false)
   }
 
   return (
@@ -115,31 +159,51 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
           loop
           playsInline
           preload="metadata"
+          onError={handleVideoError}
+          onLoadedData={handleVideoLoad}
         />
         
-        {/* Overlay when not playing */}
-        <AnimatePresence>
-          {!isPlaying && (
-            <motion.div 
-              className="absolute inset-0 bg-black/60 flex items-center justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="text-center text-white">
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-2"
-                >
-                  <FaPlay className="w-5 h-5 ml-1" />
-                </motion.div>
-                <p className="text-xs font-medium opacity-80">Click to play</p>
+        {/* Error overlay */}
+        {videoError && (
+          <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
+            <div className="text-center text-white">
+              <div className="w-12 h-12 rounded-full bg-red-500/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-2">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <p className="text-sm font-medium">Video unavailable</p>
+              <button
+                onClick={handlePlay}
+                className="mt-2 px-3 py-1 bg-red-500 hover:bg-red-600 rounded text-xs font-medium transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
+        
+        {/* Overlay when not playing and no error */}
+        {!isPlaying && !videoError && (
+          <motion.div 
+            className="absolute inset-0 bg-black/60 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-center text-white">
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-2"
+              >
+                <FaPlay className="w-5 h-5 ml-1" />
+              </motion.div>
+              <p className="text-xs font-medium opacity-80">{hasUserInteracted ? 'Click to play' : 'Click to start'}</p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Playing indicator */}
         {isPlaying && (
@@ -150,7 +214,7 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
             transition={{ type: "spring", stiffness: 500 }}
           >
             <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-            Playing
+            Playing{videoRef.current?.muted ? ' (Muted)' : ''}
           </motion.div>
         )}
 

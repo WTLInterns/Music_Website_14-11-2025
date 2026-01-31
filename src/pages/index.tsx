@@ -32,6 +32,7 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
   const [hasUserInteracted, setHasUserInteracted] = useState(false)
   const [videoError, setVideoError] = useState(false)
   const [videoLoaded, setVideoLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const { currentPlayingIndex, setCurrentPlayingIndex } = useContext(VideoContext)
 
   useEffect(() => {
@@ -59,21 +60,28 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
 
   useEffect(() => {
     if (videoRef.current) {
-      if (currentPlayingIndex === index && isVisible && hasUserInteracted && videoLoaded) {
-        // This video should be playing, user has interacted, and video is loaded
-        console.log(`Playing video ${index}`)
+      // Only attempt to play if this video is selected and user has interacted
+      if (currentPlayingIndex === index && hasUserInteracted) {
+        console.log(`Attempting to play video ${index}`)
         const attemptPlay = async () => {
           try {
-            videoRef.current!.muted = false
-            await videoRef.current!.play()
-            setIsPlaying(true)
-          } catch (error) {
-            console.log('Unmuted autoplay failed, trying muted:', error)
-            try {
-              videoRef.current!.muted = true
-              await videoRef.current!.play()
+            if (videoRef.current && videoRef.current.readyState >= 2) {
+              videoRef.current.muted = false
+              await videoRef.current.play()
               setIsPlaying(true)
-              console.log('Video playing muted due to browser policy')
+              console.log(`Video ${index} playing successfully`)
+            } else {
+              console.log(`Video ${index} not ready yet`)
+            }
+          } catch (error) {
+            console.log('Unmuted play failed, trying muted:', error)
+            try {
+              if (videoRef.current) {
+                videoRef.current.muted = true
+                await videoRef.current.play()
+                setIsPlaying(true)
+                console.log('Video playing muted due to browser policy')
+              }
             } catch (mutedError) {
               console.error('Play failed completely:', mutedError)
               setIsPlaying(false)
@@ -83,68 +91,35 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
         }
         
         attemptPlay()
-      } else {
-        // This video should not be playing
-        console.log(`Pausing video ${index}`)
-        videoRef.current.pause()
-        setIsPlaying(false)
+      } else if (currentPlayingIndex !== index) {
+        // Only pause if this video is currently playing
+        if (isPlaying && videoRef.current) {
+          console.log(`Pausing video ${index}`)
+          videoRef.current.pause()
+          setIsPlaying(false)
+        }
       }
     }
-  }, [currentPlayingIndex, index, isVisible, hasUserInteracted, videoLoaded])
+  }, [currentPlayingIndex, index, hasUserInteracted, isPlaying])
 
   const handlePlay = () => {
     setHasUserInteracted(true)
     setVideoError(false)
     
     if (videoRef.current) {
-      if (currentPlayingIndex === index) {
+      if (currentPlayingIndex === index && isPlaying) {
         // Stop this video
         videoRef.current.pause()
         setCurrentPlayingIndex(null)
         setIsPlaying(false)
       } else {
-        // Check if video is loaded before attempting to play
-        if (!videoLoaded) {
-          console.log(`Video ${index} not loaded yet, waiting...`)
-          // Wait for video to load then play
-          const waitForLoad = () => {
-            if (videoRef.current && videoRef.current.readyState >= 2) {
-              attemptPlay()
-            } else {
-              setTimeout(waitForLoad, 100)
-            }
-          }
-          waitForLoad()
-          return
-        }
-        
-        attemptPlay()
+        // Play this video, stop others
+        setCurrentPlayingIndex(index)
+        setIsPlaying(true)
       }
     }
   }
 
-  const attemptPlay = async () => {
-    if (!videoRef.current) return
-    
-    try {
-      videoRef.current.muted = false
-      await videoRef.current.play()
-      setCurrentPlayingIndex(index)
-      setIsPlaying(true)
-    } catch (error) {
-      console.log('Unmuted play failed, trying muted:', error)
-      try {
-        videoRef.current.muted = true
-        await videoRef.current.play()
-        setCurrentPlayingIndex(index)
-        setIsPlaying(true)
-        console.log('Video playing muted due to browser policy')
-      } catch (mutedError) {
-        console.error('Both unmuted and muted play failed:', mutedError)
-        setVideoError(true)
-      }
-    }
-  }
 
   const handleVideoError = () => {
     console.error(`Video ${index} failed to load:`, src)
@@ -155,12 +130,14 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
   const handleVideoLoad = () => {
     setVideoError(false)
     setVideoLoaded(true)
+    setIsLoading(false)
     console.log(`Video ${index} loaded successfully:`, src)
   }
 
   const handleVideoCanPlay = () => {
     setVideoError(false)
     setVideoLoaded(true)
+    setIsLoading(false)
     console.log(`Video ${index} can play:`, src)
   }
 
@@ -215,7 +192,7 @@ function StudentVideoPlayer({ src, title, index, totalVideos }: {
         )}
         
         {/* Loading overlay */}
-        {!videoLoaded && !videoError && (
+        {isLoading && !videoError && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <div className="text-center text-white">
               <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-2">
